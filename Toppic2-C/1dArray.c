@@ -5,9 +5,11 @@
 //===KHAI BAO HAM===
 void inputArray(int arr[], int *n);
 void outputArray(int arr[], int n);
-void printDescending(int arr[], int n);
-void checkAllOdd(int arr[], int n);
-void searchValue(int arr[], int n);
+void sortDescending(int arr[], int n);
+void printDescending (int arr[],int n);
+bool checkAllOdd(int arr[], int n);
+void resultAllOdd(int arr[], int n);
+int searchValue(int arr[], int n, int x);
 bool isPrime(int num);
 void displayPrimes(int arr[], int n);
 
@@ -32,8 +34,15 @@ int main() {
             case 1: inputArray(arr, &n); break;
             case 2: outputArray(arr, n); break;
             case 3: printDescending(arr, n); break;
-            case 4: checkAllOdd(arr, n); break;
-            case 5: searchValue(arr, n); break;
+            case 4: resultAllOdd(arr, n); break;
+            case 5: 
+            {
+            	int x; 
+    			printf("Nhap gia tri can tim: ");
+    			scanf("%d", &x);
+    			printf("So %d xuat hien %d lan", x, searchValue(arr, n, x));
+				break;
+			}
             case 6: displayPrimes(arr, n); break;
             case 7: 
 			{
@@ -80,25 +89,30 @@ void outputArray(int arr[], int n)
 }
 
 // Ham in mang giam dan
-void printDescending(int arr[], int n) 
+void sortDescending(int arr[], int n) 
 {
-    int tempArr[100];
-    for (int i = 0; i < n; i++) tempArr[i] = arr[i];
-
+	int temp;
     for (int i = 0; i < n - 1; i++) 
 	{
         for (int j = i + 1; j < n; j++) 
 		{
-            if (tempArr[i] < tempArr[j]) 
+            if (arr[i] < arr[j]) 
 			{
-                int temp = tempArr[i];
-                tempArr[i] = tempArr[j];
-                tempArr[j] = temp;
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
         }
     }
+}
 
-    printf("Mang giam dan: ");
+void printDescending (int arr[],int n)
+{
+	int tempArr[100];
+	for (int i = 0; i < n; i++) 
+		tempArr[i] = arr[i];
+	sortDescending(tempArr,n);
+	printf("Mang giam dan: ");
     for (int i = 0; i < n; i++) 
 	{
         printf("%d ", tempArr[i]);
@@ -107,35 +121,36 @@ void printDescending(int arr[], int n)
 }
 
 // Ham kiem tra toan bo so le
-void checkAllOdd(int arr[], int n) 
+bool checkAllOdd(int arr[], int n) 
 {
-    bool allOdd = true;
     for (int i = 0; i < n; i++) 
 	{
         if (arr[i] % 2 == 0) 
 		{
-            allOdd = false;
-            break;
+            return false;
         }
     }
-    if (allOdd) 
+	return true;  
+}
+
+void resultAllOdd(int arr[], int n)
+{
+	if (checkAllOdd(arr,n)) 
 		printf("Tat ca phan tu la so le.\n");
     else 
 		printf("Mang co phan tu khong phai so le.\n");
 }
 
+
 // Ham tim gia tri
-void searchValue(int arr[], int n) 
+int searchValue(int arr[], int n, int x) 
 {
-    int x; 
-	int count = 0;
-    printf("Nhap gia tri can tim: ");
-    scanf("%d", &x);
+    int count = 0;
     for (int i = 0; i < n; i++) 
 	{
         if (arr[i] == x) count++;
     }
-    printf("Gia tri %d xuat hien %d lan.\n", x, count);
+    return count;
 }
 
 // Ham kiem tra so nguyen to
