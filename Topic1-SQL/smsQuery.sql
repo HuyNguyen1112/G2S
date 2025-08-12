@@ -51,14 +51,22 @@ GO
 CREATE PROCEDURE DeleteCustomer @cid INT
 AS
 BEGIN
-    DELETE FROM LineItem
-    WHERE order_id IN (SELECT order_id FROM Orders WHERE customer_id = @cid);
+	BEGIN TRY
+		BEGIN TRANSACTION
+		DELETE FROM LineItem
+		WHERE order_id IN (SELECT order_id FROM Orders WHERE customer_id = @cid);
 
-    DELETE FROM Orders
-    WHERE customer_id = @cid;
+		DELETE FROM Orders
+		WHERE customer_id = @cid;
 
-    DELETE FROM Customer
-    WHERE customer_id = @cid;
+		DELETE FROM Customer
+		WHERE customer_id = @cid;
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+		PRINT 'Lỗi: ' + ERROR_MESSAGE();
+	END CATCH
 END;
 GO
 
