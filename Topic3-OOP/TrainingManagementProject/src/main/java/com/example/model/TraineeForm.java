@@ -5,9 +5,10 @@ import java.util.Scanner;
 public class TraineeForm {
     private Scanner scanner;
 
-    public TraineeForm(Scanner scanner){
-        this.scanner=scanner;
+    public TraineeForm(Scanner scanner) {
+        this.scanner = scanner;
     }
+
     public String getId() {
         System.out.print("Nhập ID: ");
         return scanner.nextLine();
@@ -22,29 +23,28 @@ public class TraineeForm {
         byte age;
 
         do {
-            id =getId();
-        }while (!trainee.setId(id));
+            id = getId();
+        } while (!trainee.setId(id));
 
         do {
             System.out.print("Nhập tên: ");
-            name=scanner.nextLine();
+            name = scanner.nextLine();
         }
         while (!trainee.setName(name));
 
         do {
             System.out.print("Nhập giới tính (male/female): ");
-            gender=scanner.nextLine();
+            gender = scanner.nextLine();
         }
         while (!trainee.setGender(gender));
 
         do {
             System.out.print("Nhập tuổi: ");
-            age=Byte.parseByte(scanner.nextLine());
+            age = Byte.parseByte(scanner.nextLine());
         }
         while (!trainee.setAge(age));
         return trainee;
     }
-
 
 
 }
