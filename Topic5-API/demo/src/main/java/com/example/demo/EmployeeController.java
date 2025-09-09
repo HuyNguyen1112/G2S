@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/employees")
 public class EmployeeController {
@@ -12,24 +14,28 @@ public class EmployeeController {
     private EmployeeRepository employeeRepository;
 
     @GetMapping
-    public ResponseEntity<?>getAllEmployee() {
-        return new ResponseEntity<>(employeeRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<EmployeeResponse>>getAllEmployee() {
+        List<EmployeeResponse> employees = employeeRepository.findAll().stream()
+                .map(EmployeeMapper::toResponse)
+                .toList();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        return new ResponseEntity<>(employeeRepository.save(employee), HttpStatus.CREATED);
+    public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody EmployeeRequest employee) {
+        Employee saveEmployee = employeeRepository.save(EmployeeMapper.toEntity(employee));
+        return new ResponseEntity<>(EmployeeMapper.toResponse(saveEmployee), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee newData) {
+    public ResponseEntity<Employee> update(@PathVariable int id, @RequestBody Employee newData) {
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (employee != null) {
             employee.setFirstName(newData.getFirstName());
             employee.setLastName(newData.getLastName());
             employee.setBirthDate(newData.getBirthDate());
             employee.setSupervisorId(newData.getSupervisorId());
-            return employeeRepository.save(employee);
+            return new ResponseEntity<>(employeeRepository.save(employee), HttpStatus.OK);
         }
         return null;
     }
