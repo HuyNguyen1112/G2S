@@ -59,7 +59,7 @@ public class OrderService {
         if(!orderRepository.existsById(id)) {
             throw new NotFoundException(id);
         }
-
+        //không làm theo cách này, xem lại customerUpdate
         Order order = orderMapper.toEntity(orderDTO);
         order.setId(id);
 
