@@ -2,6 +2,9 @@ package com.example.customer.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "customers")
 public class Customer {
@@ -28,6 +31,9 @@ public class Customer {
 
     @Column(name = "country", length = 255)
     private String country;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders = new HashSet<>();
 
     public Integer getCustomerId() {
         return customerId;
