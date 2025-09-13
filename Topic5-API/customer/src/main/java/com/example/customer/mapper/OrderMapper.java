@@ -15,6 +15,7 @@ public interface OrderMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "employee.id",source = "employeeId")
+    // tương tự order.setEmployeeId(orderRequest.getEmployeeId())
     @Mapping(target = "customer.customerId", source = "customerId")
     Order toEntity(OrderDTO orderDTO);
 }
