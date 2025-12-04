@@ -25,6 +25,7 @@ public class JwtService {
     public String generateToken(User user) {
         Instant now = Instant.now();
         return Jwts.builder().
+                //Tạo ra payload
                 subject(user.getUsername())
                 .claim("role",user.getRole().name())
                 .issuedAt(Date.from(now))

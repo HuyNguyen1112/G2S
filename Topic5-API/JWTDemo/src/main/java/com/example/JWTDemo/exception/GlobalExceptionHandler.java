@@ -2,6 +2,7 @@ package com.example.JWTDemo.exception;
 
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -36,6 +37,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("errors", exceptionalErrors);
 
         return new ResponseEntity<>(body, status);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String message = "Duplicate value detected: " + ex.getMostSpecificCause().getMessage();
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(NotFoundException.class)
